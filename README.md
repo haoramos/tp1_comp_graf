@@ -137,7 +137,7 @@ O canto superior esquerdo da janela exibe nº de pontos e segmentos, raio mín./
 - Bresenham (8 octantes, aritmética inteira);
 - Scanline Fill com Tabela de Arestas (ET) e Tabela de Arestas Ativas (AET), regra par-ímpar;
 - supersampling por cobertura (1, 2×2, 4×4 amostras por pixel) e métricas de erro;
-- Cohen–Sutherland (obrigatório) e Liang–Barsky, com contadores de custo;
+- Cohen–Sutherland (codificação binária de 4 bits) e Liang–Barsky, com contadores de custo;
 - Sutherland–Hodgman, com validação/reorientação da janela e detecção das arestas sobrepostas em polígonos côncavos.
 
 **Fornecido por bibliotecas:**
@@ -176,9 +176,3 @@ TP1_grafica/
 
 Para compilar os documentos: `pdflatex relatorio.tex` (duas vezes) dentro de `report/` e `pdflatex apresentacao.tex` (duas vezes)
 dentro de `presentation/`.
-
-## 12. Entrega
-
-Conforme o enunciado, o `.zip` **não** deve conter `venv/`, `__pycache__/` nem arquivos auxiliares do LaTeX
-(`*.aux`, `*.log`, `*.out`, `*.toc`, `*.nav`, `*.snm`). Rode `make clean` antes de compactar.
-Todos esses arquivos são recriados por `make install` e pela compilação dos `.tex`.
