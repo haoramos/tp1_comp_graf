@@ -44,10 +44,10 @@
   \leavevmode%
   \hbox{%
     \begin{beamercolorbox}[wd=.72\paperwidth,ht=2.6ex,dp=1.1ex,leftskip=1.5ex]{author in head/foot}%
-      \textcolor{darkslate}{\insertshorttitle}
+      \usebeamerfont{author in head/foot}\textcolor{white}{\insertshorttitle}
     \end{beamercolorbox}%
     \begin{beamercolorbox}[wd=.28\paperwidth,ht=2.6ex,dp=1.1ex,rightskip=1.5ex plus1fil]{date in head/foot}%
-      \hfill \textcolor{darkslate}{\insertframenumber/\inserttotalframenumber}
+      \usebeamerfont{date in head/foot}\hfill \textcolor{white}{\insertframenumber/\inserttotalframenumber}
     \end{beamercolorbox}%
   }%
 }
@@ -189,7 +189,7 @@ $r_{max}/r_{min}$ & 5,81 & 4,96\\
 \node[own] (vtk) {Leitura VTK\\\scriptsize\texttt{vtk\_loader.py}};
 \node[box, right=of vtk] (model) {Geometria e atributos\\\scriptsize\texttt{CCOTreeModel}};
 \node[own, right=of model, yshift=0.85cm] (view) {Transformações\\e câmera\\\scriptsize\texttt{viewer\_3d.py}};
-\node[own, right=of model, yshift=-0.85cm] (cg) {Rasterização\\e recorte\\\scriptsize\texttt{rasterization/clipping}};
+\node[own, right=of model, yshift=-0.85cm] (cg) {Rasterização\\e recorte\\\scriptsize\texttt{rasterization.py}\\\scriptsize\texttt{clipping.py}};
 \node[box, right=of view] (win) {Janela interativa\\(M1, M2, M5)};
 \node[box, right=of cg] (fig) {Figuras didáticas\\(M3 a M7)};
 \draw[arr] (vtk) -- (model);
@@ -223,27 +223,24 @@ $r_{max}/r_{min}$ & 5,81 & 4,96\\
 \end{frame}
 
 \begin{frame}{Transformações Geométricas}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{mod2_transformacoes.png}
+\end{center}
+\vspace{-0.3cm}
 \begin{columns}[T]
-\column{0.44\textwidth}
-\small
+\column{0.48\textwidth}
+\footnotesize
 \begin{itemize}
-  \item Matrizes homogêneas $4\times4$ em NumPy:
-  \[
-  T(\mathbf{d}),\ R_x, R_y, R_z(\theta),\ S(s)
-  \]
-  \item Em torno do centroide $\mathbf{c}$:
-  \[
-  M' = T(\mathbf{c})\, M\, T(-\mathbf{c})
-  \]
-  \item Acúmulo $M_{acc} \leftarrow M'\,M_{acc}$, impresso no terminal a cada tecla.
-  \item Teclas: \texttt{T/G} translação, \texttt{K/J} rotação de $15^\circ$, \texttt{+/-} escala, \texttt{0} reinicia.
+  \item Matrizes homogêneas $4\times4$ em NumPy: $T(\mathbf{d})$, $R_x, R_y, R_z(\theta)$, $S(s)$.
+  \item Em torno do centroide: $M' = T(\mathbf{c})\, M\, T(-\mathbf{c})$.
+  \item Acúmulo $M_{acc} \leftarrow M'\,M_{acc}$, impresso no terminal.
 \end{itemize}
-\column{0.54\textwidth}
-\vspace{0.3cm}
-\includegraphics[width=\textwidth]{mod2_transformacoes.png}
-
-\vspace{0.1cm}
-\scriptsize Câmera fixa: a mudança na imagem vem só das coordenadas no mundo.
+\column{0.48\textwidth}
+\footnotesize
+\begin{itemize}
+  \item Teclas: \texttt{T/G} translação, \texttt{K/J} rotação de $15^\circ$, \texttt{+/-} escala, \texttt{0} reinicia.
+  \item Câmera fixa: a mudança na imagem vem só das coordenadas no mundo.
+\end{itemize}
 \end{columns}
 \end{frame}
 
@@ -326,7 +323,7 @@ Recorte de polígonos & Sutherland--Hodgman (Weiler--Atherton discutido) & grupo
 \column{0.41\textwidth}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-Mesma geometria e espessura; só muda o nº de amostras.
+Mesma geometria e espessura; só muda o número de amostras por pixel.
 
 \vspace{0.15cm}
 \begin{tabular}{lccc}

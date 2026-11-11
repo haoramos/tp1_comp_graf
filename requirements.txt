@@ -2,3 +2,4 @@ numpy==1.26.4
 pyvista==0.43.3
 matplotlib==3.8.3
 vtk==9.3.0
+Pillow==13.0.0

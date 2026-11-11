@@ -308,8 +308,8 @@ Os 127 segmentos da árvore 2D foram recortados pela janela $[-0{,}022;\,0{,}022
 \toprule
 \textbf{Algoritmo} & \textbf{Visíveis} & \textbf{Iterações} & \textbf{Divisões} & \textbf{Tempo/segmento} \\
 \midrule
-Cohen--Sutherland & 35 & 141 & 14 & 2,25\,$\mu$s \\
-Liang--Barsky & 35 & 342 & 342 & 3,38\,$\mu$s \\
+Cohen--Sutherland & 35 & 141 & 14 & 2,79\,$\mu$s \\
+Liang--Barsky & 35 & 342 & 342 & 5,07\,$\mu$s \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -334,7 +334,7 @@ Na Figura~\ref{fig:mod7} (acima), um polígono de 7 vértices que ultrapassa os 
 % =====================================================================
 \section{Discussão}\label{sec:disc}
 % =====================================================================
-\textbf{Comparação entre algoritmos de recorte.} Na árvore CCO a maioria dos segmentos é curta em relação à janela, então quase todos ficam inteiramente dentro ou do mesmo lado de fora. O Cohen--Sutherland resolveu 114 dos 127 segmentos (90\%) apenas com operações de bits, sem nenhuma divisão, e calculou só 14 interseções. O Liang--Barsky sempre executa os quatro testes de borda e calcula até quatro razões $q_k/p_k$ por segmento, totalizando 342 divisões; nesta cena ele foi cerca de 1,5 vez mais lento. A vantagem do Liang--Barsky aparece quando muitos segmentos cruzam a janela: o Cohen--Sutherland pode então calcular interseções intermediárias que serão descartadas (um extremo é movido para uma borda e ainda fica fora), enquanto o Liang--Barsky calcula cada extremo final uma única vez. O Cyrus--Beck, por sua vez, só se justifica quando a janela não é um retângulo alinhado aos eixos.
+\textbf{Comparação entre algoritmos de recorte.} Na árvore CCO a maioria dos segmentos é curta em relação à janela, então quase todos ficam inteiramente dentro ou do mesmo lado de fora. O Cohen--Sutherland resolveu 114 dos 127 segmentos (90\%) apenas com operações de bits, sem nenhuma divisão, e calculou só 14 interseções. O Liang--Barsky sempre executa os quatro testes de borda e calcula até quatro razões $q_k/p_k$ por segmento, totalizando 342 divisões; nesta cena ele foi cerca de 1,8 vez mais lento (o tempo absoluto varia entre execuções e máquinas, mas o Cohen--Sutherland foi mais rápido em todas as nossas medições). A vantagem do Liang--Barsky aparece quando muitos segmentos cruzam a janela: o Cohen--Sutherland pode então calcular interseções intermediárias que serão descartadas (um extremo é movido para uma borda e ainda fica fora), enquanto o Liang--Barsky calcula cada extremo final uma única vez. O Cyrus--Beck, por sua vez, só se justifica quando a janela não é um retângulo alinhado aos eixos.
 
 \textbf{Decisões de implementação.} (i) Um tubo por segmento, com pontos duplicados, para que o raio não seja interpolado entre vasos vizinhos. (ii) O pivô das transformações é o centroide atual, para que a árvore gire e escale ``no lugar'' e para que cada operação tenha inversa exata. (iii) Na comparação de antialiasing, a geometria e a espessura são idênticas nos três casos e só muda o número de amostras; assim a diferença nas imagens vem apenas da amostragem. (iv) O Scanline usa intervalos semiabertos em $y$ para tratar vértices compartilhados e arestas horizontais sem casos especiais; a versão fechada é a união de duas passadas, uma delas com o polígono espelhado em $y$. (v) O Sutherland--Hodgman valida que a janela é convexa e não degenerada e a reorienta para o sentido anti-horário, pois o teste de lado interno depende da orientação.
 

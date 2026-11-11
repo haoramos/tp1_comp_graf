@@ -5,7 +5,6 @@ algoritmos implementados em rasterization.py e clipping.py).
 Executar:  make plots   (ou  python main.py --mode plots)
 """
 import os
-import shutil
 import time
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,14 +21,39 @@ from src.clipping import (
 DEFAULT_CLIP_WINDOW = (-0.022, -0.020, 0.022, 0.025)
 
 
+REPORT_MAX_WIDTH = 2400   # px: nítido a ~350 dpi na largura de uma página A4
+SLIDES_MAX_WIDTH = 1600   # px: suficiente para um slide 16:9 projetado
+
+
+def finalize_png(src_path, dst_path, max_width):
+    """
+    Grava em dst_path uma cópia RGB (sem canal alfa, fundo branco) de src_path,
+    reduzida para no máximo max_width pixels de largura.
+
+    PNGs RGBA grandes deixam o pdflatex lento (o canal alfa vira uma máscara
+    separada que precisa ser recomprimida), o que estoura o tempo de compilação
+    do Overleaf gratuito. RGB e resolução moderada resolvem isso.
+    """
+    from PIL import Image
+    with Image.open(src_path) as im:
+        im = im.convert("RGBA")
+        flat = Image.new("RGB", im.size, (255, 255, 255))
+        flat.paste(im, mask=im.split()[3])
+        if flat.width > max_width:
+            h = round(flat.height * max_width / flat.width)
+            flat = flat.resize((max_width, h), Image.LANCZOS)
+        flat.save(dst_path, optimize=True)
+
+
 def _save_fig(fig, filename, report_dir, pres_dir):
-    """Salva a figura em report/figures e copia para presentation/figures."""
+    """Salva a figura em report/figures e uma versão mais leve em presentation/figures."""
     os.makedirs(report_dir, exist_ok=True)
     os.makedirs(pres_dir, exist_ok=True)
     rep_path = os.path.join(report_dir, filename)
     pres_path = os.path.join(pres_dir, filename)
-    fig.savefig(rep_path, dpi=300, bbox_inches="tight")
-    shutil.copyfile(rep_path, pres_path)
+    fig.savefig(rep_path, dpi=300, bbox_inches="tight", facecolor="white")
+    finalize_png(rep_path, pres_path, SLIDES_MAX_WIDTH)
+    finalize_png(rep_path, rep_path, REPORT_MAX_WIDTH)
     print(f"  [Salvo] {rep_path}")
 
 

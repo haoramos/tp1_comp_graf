@@ -25,6 +25,7 @@ Aplicação que lê, representa, transforma, rasteriza e recorta árvores arteri
 | PyVista | 0.43.3 | janela, câmera, projeções, tubos, mapa de cores, MSAA/SSAA |
 | VTK | 9.3.0 | backend de renderização do PyVista |
 | Matplotlib | 3.8.3 | desenho das figuras dos Módulos 3 a 7 e montagem das capturas |
+| Pillow | 13.0.0 | grava as figuras em RGB e reduz a resolução das cópias usadas nos slides |
 
 As versões estão fixadas em [`requirements.txt`](requirements.txt).
 

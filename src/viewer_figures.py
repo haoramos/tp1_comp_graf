@@ -16,13 +16,13 @@ Figuras geradas (em report/figures e presentation/figures):
   mod5_viewer_aa.png      - recorte ampliado sem AA, com MSAA e com SSAA
 """
 import os
-import shutil
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
 from src.vtk_loader import load_vtk_cco
 from src.viewer_3d import CCOViewer
+from src.didactic_plots import finalize_png, REPORT_MAX_WIDTH, SLIDES_MAX_WIDTH
 
 WINDOW = (900, 800)   # resolução (px) de cada captura
 
@@ -54,8 +54,10 @@ def _save(fig, filename, report_dir, pres_dir):
     os.makedirs(report_dir, exist_ok=True)
     os.makedirs(pres_dir, exist_ok=True)
     path = os.path.join(report_dir, filename)
-    fig.savefig(path, dpi=200, bbox_inches="tight")
-    shutil.copyfile(path, os.path.join(pres_dir, filename))
+    fig.savefig(path, dpi=200, bbox_inches="tight", facecolor="white")
+    # Versões RGB e mais leves (ver finalize_png): compilam rápido no Overleaf.
+    finalize_png(path, os.path.join(pres_dir, filename), SLIDES_MAX_WIDTH)
+    finalize_png(path, path, REPORT_MAX_WIDTH)
     plt.close(fig)
     print(f"  [Salvo] {path}")
 
